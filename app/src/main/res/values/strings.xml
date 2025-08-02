@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">Coding Test - Fauzan Abdillah</string>
+    <string name="input_username_hint_text">Masukkan username kamu</string>
+    <string name="empty_dash">-</string>
+    <string name="input_password_hint_text">Masukkan password kamu</string>
+    <string name="login">Masuk</string>
+    <string name="username_is_required">Username wajib diisi</string>
+    <string name="password_is_required">Password wajib diisi</string>
+    <string name="login_success">Login berhasil</string>
 </resources>

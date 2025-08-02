@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:padding="16dp"
+    tools:context=".LoginActivity">
+
+    <ImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="50dp"
+        android:contentDescription="@string/empty_dash"
+        android:padding="32dp"
+        android:src="@drawable/logo_android" />
+
+    <EditText
+        android:id="@+id/et_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/iv_logo"
+        android:autofillHints="username"
+        android:background="@drawable/bg_edit_text_rounded"
+        android:drawablePadding="4dp"
+        android:hint="@string/input_username_hint_text"
+        android:inputType="text"
+        android:textColor="@color/black"
+        android:textColorHint="@color/grey"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_username_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_username"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/username_is_required"
+        android:textColor="@color/red"
+        android:textSize="12sp"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <EditText
+        android:id="@+id/et_password"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_username_error"
+        android:layout_marginTop="12dp"
+        android:autofillHints="password"
+        android:background="@drawable/bg_edit_text_rounded"
+        android:drawablePadding="4dp"
+        android:hint="@string/input_password_hint_text"
+        android:inputType="textPassword"
+        android:textColor="@color/black"
+        android:textColorHint="@color/grey"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tv_password_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_password"
+        android:layout_marginHorizontal="8dp"
+        android:layout_marginTop="4dp"
+        android:text="@string/password_is_required"
+        android:textColor="@color/red"
+        android:textSize="12sp"
+        android:visibility="gone"
+        tools:visibility="visible" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_password_error"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/btn_primary_rounded"
+        android:backgroundTint="@null"
+        android:enabled="false"
+        android:text="@string/login"
+        android:textAllCaps="false"
+        android:textColor="@color/white" />
+
+</RelativeLayout>
