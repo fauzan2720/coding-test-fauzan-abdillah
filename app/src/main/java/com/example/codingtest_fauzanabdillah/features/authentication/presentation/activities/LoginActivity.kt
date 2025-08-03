@@ -1,4 +1,4 @@
-package com.example.codingtest_fauzanabdillah
+package com.example.codingtest_fauzanabdillah.features.authentication.presentation.activities
 
 import android.os.Bundle
 import android.view.View
@@ -6,7 +6,9 @@ import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.widget.addTextChangedListener
+import com.example.codingtest_fauzanabdillah.R
 import com.example.codingtest_fauzanabdillah.databinding.ActivityLoginBinding
+import com.example.codingtest_fauzanabdillah.features.home.presentation.activities.DashboardActivity
 
 class LoginActivity : AppCompatActivity() {
     private lateinit var binding: ActivityLoginBinding
@@ -22,7 +24,6 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun setupValidation() {
-
         binding.etUsername.addTextChangedListener { value ->
             binding.tvUsernameError.visibility =
                 if (value.toString().isEmpty()) View.VISIBLE else View.GONE
@@ -50,5 +51,9 @@ class LoginActivity : AppCompatActivity() {
 
     private fun goToDashboard() {
         Toast.makeText(this, getString(R.string.login_success), Toast.LENGTH_SHORT).show()
+
+        val username = binding.etUsername.text.toString()
+        val intent = DashboardActivity.getStartIntent(this, username)
+        startActivity(intent)
     }
 }
