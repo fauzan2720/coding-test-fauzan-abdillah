@@ -5,12 +5,10 @@ import android.content.Intent
 import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.codingtest_fauzanabdillah.R
+import com.example.codingtest_fauzanabdillah.core.base.BaseActivity
 import com.example.codingtest_fauzanabdillah.core.util.LoadingDialogUtil
 import com.example.codingtest_fauzanabdillah.databinding.ActivityDashboardBinding
 import com.example.codingtest_fauzanabdillah.features.home.data.datasources.BookmarkPreferenceService
@@ -20,7 +18,7 @@ import com.example.codingtest_fauzanabdillah.features.home.presentation.presente
 import com.example.codingtest_fauzanabdillah.features.home.presentation.presenters.PostPresenter
 import org.koin.android.ext.android.inject
 
-class DashboardActivity : AppCompatActivity(), PostContract.View {
+class DashboardActivity : BaseActivity(), PostContract.View {
     companion object {
         const val USERNAME_ARG = "USERNAME_ARG"
 
@@ -43,11 +41,7 @@ class DashboardActivity : AppCompatActivity(), PostContract.View {
         enableEdgeToEdge()
         binding = ActivityDashboardBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        applyWindowInsetsTo(binding.root)
 
         presenter.attachView(this)
         presenter.getPosts()

@@ -1,18 +1,25 @@
 package com.example.codingtest_fauzanabdillah.features.authentication.presentation.activities
 
+import android.content.Context
+import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.core.widget.addTextChangedListener
 import com.example.codingtest_fauzanabdillah.R
+import com.example.codingtest_fauzanabdillah.core.base.BaseActivity
 import com.example.codingtest_fauzanabdillah.databinding.ActivityLoginBinding
 import com.example.codingtest_fauzanabdillah.features.home.presentation.activities.DashboardActivity
 
-class LoginActivity : AppCompatActivity() {
+class LoginActivity : BaseActivity() {
+    companion object {
+        fun getStartIntent(context: Context): Intent {
+            val intent = Intent(context, LoginActivity::class.java)
+            return intent
+        }
+    }
+
     private lateinit var binding: ActivityLoginBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,11 +27,7 @@ class LoginActivity : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityLoginBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        applyWindowInsetsTo(binding.root)
 
         setupValidation()
         setupButton()
@@ -62,5 +65,6 @@ class LoginActivity : AppCompatActivity() {
         val username = binding.etUsername.text.toString()
         val intent = DashboardActivity.getStartIntent(this, username)
         startActivity(intent)
+        finish()
     }
 }

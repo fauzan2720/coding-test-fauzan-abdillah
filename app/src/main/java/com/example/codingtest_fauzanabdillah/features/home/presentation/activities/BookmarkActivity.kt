@@ -5,16 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import androidx.activity.enableEdgeToEdge
-import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.example.codingtest_fauzanabdillah.core.base.BaseActivity
 import com.example.codingtest_fauzanabdillah.databinding.ActivityBookmarkBinding
 import com.example.codingtest_fauzanabdillah.features.home.data.datasources.BookmarkPreferenceService
 import com.example.codingtest_fauzanabdillah.features.home.presentation.adapters.PostAdapter
 
-class BookmarkActivity : AppCompatActivity() {
+class BookmarkActivity : BaseActivity() {
     companion object {
         fun getStartIntent(context: Context): Intent {
             val intent = Intent(context, BookmarkActivity::class.java)
@@ -31,11 +29,7 @@ class BookmarkActivity : AppCompatActivity() {
         enableEdgeToEdge()
         binding = ActivityBookmarkBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
-            val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
-            v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
-            insets
-        }
+        applyWindowInsetsTo(binding.root)
 
         getBookmarks()
 
