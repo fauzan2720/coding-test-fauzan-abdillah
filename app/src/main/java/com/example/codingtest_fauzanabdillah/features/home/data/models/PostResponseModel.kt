@@ -23,6 +23,7 @@ data class PostResponseModel(
 
 fun PostResponseModel.toDomain(): PostModel {
     return PostModel(
+        id = id ?: 0,
         title = this.title.orEmpty(),
         body = this.body.orEmpty(),
         imageURL = "https://picsum.photos/id/${this.id}/200/200"

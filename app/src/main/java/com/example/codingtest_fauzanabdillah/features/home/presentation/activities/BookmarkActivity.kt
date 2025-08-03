@@ -3,45 +3,33 @@ package com.example.codingtest_fauzanabdillah.features.home.presentation.activit
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.widget.Toast
+import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
 import androidx.core.view.WindowInsetsCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.codingtest_fauzanabdillah.R
-import com.example.codingtest_fauzanabdillah.core.util.LoadingDialogUtil
-import com.example.codingtest_fauzanabdillah.databinding.ActivityDashboardBinding
+import com.example.codingtest_fauzanabdillah.databinding.ActivityBookmarkBinding
 import com.example.codingtest_fauzanabdillah.features.home.data.datasources.BookmarkPreferenceService
-import com.example.codingtest_fauzanabdillah.features.home.domain.models.PostModel
 import com.example.codingtest_fauzanabdillah.features.home.presentation.adapters.PostAdapter
-import com.example.codingtest_fauzanabdillah.features.home.presentation.presenters.PostContract
-import com.example.codingtest_fauzanabdillah.features.home.presentation.presenters.PostPresenter
-import org.koin.android.ext.android.inject
 
-class DashboardActivity : AppCompatActivity(), PostContract.View {
+class BookmarkActivity : AppCompatActivity() {
     companion object {
-        const val USERNAME_ARG = "USERNAME_ARG"
-
-        fun getStartIntent(context: Context, username: String): Intent {
-            val intent = Intent(context, DashboardActivity::class.java)
-            intent.putExtra(USERNAME_ARG, username)
+        fun getStartIntent(context: Context): Intent {
+            val intent = Intent(context, BookmarkActivity::class.java)
             return intent
         }
     }
 
-    private lateinit var binding: ActivityDashboardBinding
-    private val presenter: PostPresenter by inject()
+    private lateinit var binding: ActivityBookmarkBinding
     private val postAdapter by lazy { PostAdapter() }
     private val bookmarkPreferenceService by lazy { BookmarkPreferenceService(this) }
-
-    private var username = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
-        binding = ActivityDashboardBinding.inflate(layoutInflater)
+        binding = ActivityBookmarkBinding.inflate(layoutInflater)
         setContentView(binding.root)
         ViewCompat.setOnApplyWindowInsetsListener(binding.root) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
@@ -49,18 +37,26 @@ class DashboardActivity : AppCompatActivity(), PostContract.View {
             insets
         }
 
-        presenter.attachView(this)
-        presenter.getPosts()
-
-        getArguments()
+        getBookmarks()
 
         setupRecyclerView()
         setupButton()
     }
 
-    private fun getArguments() {
-        username = intent.getStringExtra(USERNAME_ARG) ?: ""
-        binding.toolbar.title = getString(R.string.welcome_name, username)
+    private fun getBookmarks() {
+        val bookmarks = bookmarkPreferenceService.getBookmarks()
+        if (bookmarks.isEmpty()) {
+            binding.rvPosts.visibility = View.GONE
+            binding.tvEmptyBookmark.visibility = View.VISIBLE
+            postAdapter.clear()
+        } else {
+            binding.rvPosts.visibility = View.VISIBLE
+            binding.tvEmptyBookmark.visibility = View.GONE
+            postAdapter.apply {
+                clear()
+                setData(bookmarks)
+            }
+        }
     }
 
     private fun setupRecyclerView() {
@@ -71,33 +67,22 @@ class DashboardActivity : AppCompatActivity(), PostContract.View {
     }
 
     private fun setupButton() {
+        binding.toolbar.setNavigationOnClickListener { finish() }
         postAdapter.onBookmarkClicked = { data ->
             if (bookmarkPreferenceService.isBookmarked(data.id)) {
                 bookmarkPreferenceService.removeBookmark(data.id)
+                postAdapter.removeData(data.id)
+
+                // remove when bookmark is empty
+                val bookmarks = bookmarkPreferenceService.getBookmarks()
+                if (bookmarks.isEmpty()) {
+                    binding.rvPosts.visibility = View.GONE
+                    binding.tvEmptyBookmark.visibility = View.VISIBLE
+                    postAdapter.clear()
+                }
             } else {
                 bookmarkPreferenceService.addBookmark(data)
             }
         }
-        binding.ivBookmark.setOnClickListener {
-            val intent = BookmarkActivity.getStartIntent(this)
-            startActivity(intent)
-        }
-    }
-
-    override fun showPosts(posts: List<PostModel>) {
-        LoadingDialogUtil.hide()
-        postAdapter.apply {
-            clear()
-            setData(posts)
-        }
-    }
-
-    override fun showLoading() {
-        LoadingDialogUtil.show(this)
-    }
-
-    override fun showError(message: String) {
-        LoadingDialogUtil.hide()
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show()
     }
 }

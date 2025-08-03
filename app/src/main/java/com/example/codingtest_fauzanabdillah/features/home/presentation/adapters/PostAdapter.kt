@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.codingtest_fauzanabdillah.R
 import com.example.codingtest_fauzanabdillah.databinding.LayoutPostItemBinding
+import com.example.codingtest_fauzanabdillah.features.home.data.datasources.BookmarkPreferenceService
 import com.example.codingtest_fauzanabdillah.features.home.domain.models.PostModel
 
 class PostAdapter : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
@@ -42,10 +43,16 @@ class PostAdapter : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
                 tvPostTitle.text = data.title
                 tvPostBody.text = data.body
 
+                if (BookmarkPreferenceService(context).isBookmarked(data.id)) {
+                    ivBtnBookmark.setImageResource(R.drawable.ic_bookmark_added_24)
+                } else {
+                    ivBtnBookmark.setImageResource(R.drawable.ic_bookmark_add_24)
+                }
+
                 ivBtnBookmark.setOnClickListener {
                     onBookmarkClicked?.invoke(data)
                     ivBtnBookmark.setImageResource(R.drawable.ic_bookmark_added_24)
-                    //notifyDataSetChanged()
+                    notifyItemChanged(position)
                 }
             }
         }
@@ -55,6 +62,14 @@ class PostAdapter : RecyclerView.Adapter<PostAdapter.ViewHolder>() {
     fun setData(list: List<PostModel>) {
         this.list.addAll(list)
         notifyDataSetChanged()
+    }
+
+    fun removeData(id: Int) {
+        val index = list.indexOfFirst { it.id == id }
+        if (index != -1) {
+            list.removeAt(index)
+            notifyItemRemoved(index)
+        }
     }
 
     fun clear() {

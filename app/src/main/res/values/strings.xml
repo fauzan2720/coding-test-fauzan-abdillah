@@ -9,4 +9,7 @@
     <string name="login_success">Login berhasil</string>
     <string name="welcome_name">Selamat datang, %s!</string>
     <string name="loading">Loading...</string>
+    <string name="bookmarks">Bookmarks</string>
+    <string name="empty_data">Data kosong</string>
+    <string name="empty_bookmark">Bookmark kosong</string>
 </resources>
